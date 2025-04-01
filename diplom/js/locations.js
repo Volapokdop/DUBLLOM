@@ -1,0 +1,138 @@
+document.getElementById('locationFormContainer').addEventListener('click', () => {
+    loadEventsForLocationForm();
+});
+
+document.getElementById('locationForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Собираем выбранные события
+    const events = Array.from(
+        document.querySelectorAll('#eventsList input[type="checkbox"]:checked')
+    ).map(checkbox => checkbox.value);
+
+    const formData = new FormData(this);
+    events.forEach(id => formData.append('events[]', id));
+
+    fetch('php/add_location.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert(data.message);
+            loadLocations();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error('Ошибка:', error));
+});
+
+document.getElementById('showLocations').addEventListener('click', function (e) {
+    e.preventDefault();
+    allHide()
+    loadLocations();
+    document.getElementById('locations').classList.remove('hidden');
+    document.getElementById('locationFormContainer').classList.remove('hidden');
+});
+
+function allHide(){
+    document.getElementById('characters').classList.add('hidden');
+    document.getElementById('myLibrary').classList.add('hidden');
+    document.getElementById('showAddBookForm').classList.add('hidden');
+    document.getElementById('bookList').classList.add('hidden');
+    document.getElementById('addBookFormContainer').classList.add('hidden');
+    document.getElementById('events').classList.add('hidden');
+    document.getElementById('characters').classList.add('hidden');
+    document.getElementById('locations').classList.add('hidden');
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('registerForm').classList.add('hidden');
+}
+
+function loadEventsForLocationForm() {
+    fetch('php/get_events.php')
+        .then(response => response.json())
+        .then(events => {
+            loadCheckboxes('eventsList', events, 'character');
+        })
+        .catch(error => console.error('Ошибка:', error));
+}
+
+function loadEvents() {
+    fetch('php/get_locations.php')
+        .then(response => response.json())
+        .then(events => {
+            document.getElementById('locationList').innerHTML = locations.map(location => `
+                <li class="event-item">
+                    <h4>${location.title}</h4>
+                    <img src="${location.image}" alt="${location.title}" class="event-image">
+                    <p>${location.description}</p>
+                    <div class="participants-container">
+                        <h5>Участники:</h5>
+                        <div class="participants-grid">
+                            ${location.participants.map(p => `
+                                <div class="participant">
+                                    <img src="${p.image}" alt="${p.name}" class="participant-avatar">
+                                    <span>${p.name}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <button onclick="deleteEvent(${location.id})" class="delete-btn">Удалить</button>
+                </li>
+            `).join('');
+        })
+        .catch(error => console.error('Ошибка:', error));
+}
+
+function deleteLocation(locationId) {
+    if (confirm('Вы уверены, что хотите удалить эту локацию?')) {
+        fetch('php/delete_location.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ locationId: locationId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert(data.message);
+                loadLocations();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+}
+
+function loadCheckboxes(containerId, data, type) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = data.map(item => `
+        <div class="checkbox-item">
+            <input type="checkbox" id="${type}_${item.id}" name="${type}[]" value="${item.id}">
+            <label for="${type}_${item.id}">
+                ${item.image ? `<img src="${item.image}" alt="${item.name}" class="checkbox-avatar">` : ''}
+                ${item.name || item.title}
+            </label>
+        </div>
+    `).join('');
+
+    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+    const userId = localStorage.getItem('userId');
+
+    checkboxes.forEach(checkbox => {
+        const storageKey = `checkbox_${userId}_${checkbox.id}`;
+        const savedState = localStorage.getItem(storageKey);
+
+        if (savedState === 'true') {
+            checkbox.checked = true;
+        }
+
+        checkbox.addEventListener('change', (e) => {
+            localStorage.setItem(storageKey, e.target.checked.toString());
+        });
+    });
+}

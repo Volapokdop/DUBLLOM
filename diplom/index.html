@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пишем и читаем</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" onclick="showMainPage()">Главная</a>
+            <a href="#" onclick="showMyLibrary()">Моя библиотека</a>
+            <a href="#" id="showCharacters">Персонажи</a>
+            <a href="#" id="showEvents">События</a>
+            <a href="#" id="showLocations">Локации</a>
+            <a href="#" id="loginLink">Войти</a>
+            <a href="#" id="registerLink">Регистрация</a>
+            <span id="userName" class="hidden"></span>
+            <button id="logoutButton" class="hidden">Выйти</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="registerForm" class="form-container hidden">
+            <h2>Регистрация</h2>
+            <form id="registerPHP" method="POST" action="php/register.php">
+                <label for="registerUsername">Имя пользователя:</label>
+                <input type="text" id="registerUsername" name="username" required>
+                <label for="registerPassword">Пароль:</label>
+                <input type="password" id="registerPassword" name="password" required>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <p id="registerMessage"></p>
+        </div>
+
+        <div id="loginForm" class="form-container hidden">
+            <h2>Вход</h2>
+            <form id="loginPHP" enctype="multipart/form-data">
+                <label for="loginUsername">Имя пользователя:</label>
+                <input type="text" id="loginUsername" name="username" required>
+                <label for="loginPassword">Пароль:</label>
+                <input type="password" id="loginPassword" name="password" required>
+                <button type="submit">Войти</button>
+            </form>
+            <p id="loginMessage"></p>
+        </div>
+    </div>
+
+    <div id="myLibrary" class="hidden">
+        <div class="container">
+            <h2>Моя библиотека</h2>
+            <ul id="myLibraryList"></ul>
+        </div>
+    </div>
+
+    <div id="books" class="hidden">
+        <button id="showAddBookForm" class="add-book-btn">Добавить книгу</button>
+
+        <div id="addBookFormContainer" class="hidden">
+            <h3>Добавить новую книгу</h3>
+            <form id="bookForm" enctype="multipart/form-data">
+                <label for="bookTitle">Название книги:</label>
+                <input type="text" id="bookTitle" name="title" required>
+                <label for="bookAuthor">Автор:</label>
+                <input type="text" id="bookAuthor" name="author" required>
+                <label for="bookCover">Обложка книги:</label>
+                <input type="file" id="bookCover" name="cover" accept="image/*" required>
+                <label for="bookFile">Текстовый файл:</label>
+                <input type="file" id="bookFile" name="file" accept=".txt" required>
+                <button type="submit">Добавить</button>
+                <button type="button" id="cancelAddBook">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+        <h2>Список книг</h2>
+        <ul id="bookList">Список книг</ul>
+
+    <div id="characters" class="hidden">
+        <div class="container">
+            <h2>Персонажи</h2>
+
+            <div id="characterFormContainer" class="hidden">
+                <form id="characterForm" enctype="multipart/form-data">
+                    <label for="characterName">Имя:</label>
+                    <input type="text" id="characterName" name="name" required>
+
+                    <label for="characterAge">Возраст:</label>
+                    <input type="number" id="characterAge" name="age" required>
+
+                    <label for="characterBirthday">День рождения:</label>
+                    <input type="date" id="characterBirthday" name="birthday" required>
+
+                    <label for="characterGender">Пол:</label>
+                    <select id="characterGender" name="gender" required>
+                        <option value="male">Мужской</option>
+                        <option value="female">Женский</option>
+                    </select>
+
+                    <label for="characterImage">Изображение:</label>
+                    <input type="file" id="characterImage" name="image" accept="image/*" required>
+
+                    <label for="characterDescription">Описание:</label>
+                    <textarea id="characterDescription" name="description" required></textarea>
+
+                    <label for="characterBiography">Биография:</label>
+                    <textarea id="characterBiography" name="biography" required></textarea>
+
+                    <button type="submit">Добавить персонажа</button>
+                </form>
+            </div>
+
+            <h3>Список персонажей</h3>
+            <ul id="characterList"></ul>
+        </div>
+    </div>
+
+    <div id="events" class="hidden">
+        <div class="container">
+            <h2>События</h2>
+
+            <div id="eventFormContainer" class="hidden">
+                <form id="eventForm" enctype="multipart/form-data">
+                    <label for="eventTitle">Название:</label>
+                    <input type="text" id="eventTitle" name="title" required>
+
+                    <label for="eventImage">Изображение:</label>
+                    <input type="file" id="eventImage" name="image" accept="image/*" required>
+
+                    <label for="eventDescription">Описание:</label>
+                    <textarea id="eventDescription" name="description" required></textarea>
+
+                    <label>Выберите участников:</label>
+                    <div id="participantsList" class="checkbox-container">
+
+                    </div>
+
+                    <button type="submit">Добавить событие</button>
+                </form>
+            </div>
+
+            <h3>Список событий</h3>
+            <ul id="eventList"></ul>
+        </div>
+    </div>
+
+    <div id="locations" class="hidden">
+        <div class="container">
+            <h2>Локации</h2>
+
+            <div id="locationFormContainer" class="hidden">
+                <form id="locationForm" enctype="multipart/form-data">
+                    <label for="locationTitle">Название:</label>
+                    <input type="text" id="locationTitle" name="title" required>
+
+                    <label for="locationImage">Изображение:</label>
+                    <input type="file" id="locationImage" name="image" accept="image/*" required>
+
+                    <label for="locationDescription">Описание:</label>
+                    <textarea id="locationDescription" name="description" required></textarea>
+
+                    <label>События, произошедшие в локации:</label>
+                    <div id="eventsList"  class="checkbox-container">
+
+                    </div>
+
+                    <button type="submit">Добавить локацию</button>
+                </form>
+            </div>
+
+            <h3>Список локаций</h3>
+            <ul id="locationList"></ul>
+        </div>
+    </div>
+
+    <div id="editForm" class="form-container hidden">
+        <h2>Редактировать книгу</h2>
+        <label for="editTitle">Название книги:</label>
+        <input type="text" id="editTitle" placeholder="Введите название книги">
+        <label for="editAuthor">Автор:</label>
+        <input type="text" id="editAuthor" placeholder="Введите автора">
+        <label for="editCover">Обложка книги:</label>
+        <input type="file" id="editCover" accept="image/*">
+        <label for="editFile">Текстовый файл (описание или текст книги):</label>
+        <input type="file" id="editFile" accept=".txt">
+        <button onclick="saveEdit()">Сохранить</button>
+        <button onclick="cancelEdit()">Отмена</button>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/books.js"></script>
+    <script src="js/characters.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/locations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
