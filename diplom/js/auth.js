@@ -87,6 +87,10 @@ function checkAuthState() {
         document.getElementById('loginLink').classList.add('hidden');
         document.getElementById('registerLink').classList.add('hidden');
         document.getElementById('showAddBookForm').classList.remove('hidden');
+        document.getElementById('showCharacters').classList.remove('hidden');
+        document.getElementById('showEvents').classList.remove('hidden');
+        document.getElementById('showLocations').classList.remove('hidden');
+        document.getElementById('showMyLibrary').classList.remove('hidden');
     } else {
         document.getElementById('userName').classList.add('hidden');
         document.getElementById('logoutButton').classList.add('hidden');
@@ -104,25 +108,4 @@ function allHide(){
     document.getElementById('characters').classList.add('hidden');
     document.getElementById('locations').classList.add('hidden');
     document.getElementById('books').classList.add('hidden');
-}
-
-function handleAuth(e, url, messageId) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const username = formData.get('username');
-    fetch(url, { method: 'POST', body: formData })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById(messageId).textContent = data.message;
-            if (data.status === "success") {
-                allHide();
-                localStorage.setItem('username', username);
-                document.getElementById('userName').textContent = username;
-                document.getElementById('userName').classList.remove('hidden');
-                document.getElementById('logoutButton').classList.remove('hidden');
-                document.getElementById('showAddBookForm').classList.remove('hidden');
-                location.reload();
-            }
-        })
-        .catch(error => console.error('Ошибка:', error));
 }

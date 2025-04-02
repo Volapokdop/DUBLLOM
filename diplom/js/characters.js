@@ -27,15 +27,6 @@ document.getElementById('showCharacters').addEventListener('click', function (e)
     document.getElementById('characterFormContainer').classList.remove('hidden');
 });
 
-function allHide(){
-    document.getElementById('characters').classList.add('hidden');
-    document.getElementById('myLibrary').classList.add('hidden');
-    document.getElementById('showAddBookForm').classList.add('hidden');
-    document.getElementById('events').classList.add('hidden');
-    document.getElementById('characters').classList.add('hidden');
-    document.getElementById('locations').classList.add('hidden');
-}
-
 function loadCharacters() {
     fetch('php/get_characters.php')
         .then(response => response.json())

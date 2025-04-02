@@ -1,16 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const username = localStorage.getItem('username');
     const userId = localStorage.getItem('userId');
-    document.getElementById('books').classList.remove('hidden');
-    document.getElementById('bookList').classList.remove('hidden');
+    const userNameElement = document.getElementById('userName');
+    allHide();
     if (username) {
-        allHide();
         userName.textContent = username;
-
     }
-    else {
-
-    }
+    document.getElementById('books').classList.remove('hidden');
+    document.getElementById('showAddBookForm').classList.add('hidden');
+    document.getElementById('bookSection').classList.remove('hidden');
 
     const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
@@ -29,25 +27,26 @@ document.addEventListener('DOMContentLoaded', () => {
     updateBookList();
 });
 
-function allHide(){
+function allHide() {
     document.getElementById('characters').classList.add('hidden');
     document.getElementById('myLibrary').classList.add('hidden');
     document.getElementById('showAddBookForm').classList.add('hidden');
-    document.getElementById('bookList').classList.add('hidden');
+    document.getElementById('bookSection').classList.add('hidden');
     document.getElementById('events').classList.add('hidden');
-    document.getElementById('characters').classList.add('hidden');
     document.getElementById('locations').classList.add('hidden');
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('registerForm').classList.add('hidden');
 }
 
 function showMainPage() {
-    allHide()
+    allHide();
     document.getElementById('books').classList.remove('hidden');
     document.getElementById('showAddBookForm').classList.remove('hidden');
-    document.getElementById('bookList').classList.remove('hidden');
+    document.getElementById('bookSection').classList.remove('hidden');
 }
 
 function showMyLibrary() {
-    allHide()
+    allHide();
     document.getElementById('myLibrary').classList.remove('hidden');
     loadMyLibrary();
 }

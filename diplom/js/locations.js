@@ -5,7 +5,6 @@ document.getElementById('locationFormContainer').addEventListener('click', () =>
 document.getElementById('locationForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Собираем выбранные события
     const events = Array.from(
         document.querySelectorAll('#eventsList input[type="checkbox"]:checked')
     ).map(checkbox => checkbox.value);
@@ -31,24 +30,11 @@ document.getElementById('locationForm').addEventListener('submit', function (e) 
 
 document.getElementById('showLocations').addEventListener('click', function (e) {
     e.preventDefault();
-    allHide()
+    allHide();
     loadLocations();
     document.getElementById('locations').classList.remove('hidden');
     document.getElementById('locationFormContainer').classList.remove('hidden');
 });
-
-function allHide(){
-    document.getElementById('characters').classList.add('hidden');
-    document.getElementById('myLibrary').classList.add('hidden');
-    document.getElementById('showAddBookForm').classList.add('hidden');
-    document.getElementById('bookList').classList.add('hidden');
-    document.getElementById('addBookFormContainer').classList.add('hidden');
-    document.getElementById('events').classList.add('hidden');
-    document.getElementById('characters').classList.add('hidden');
-    document.getElementById('locations').classList.add('hidden');
-    document.getElementById('loginForm').classList.add('hidden');
-    document.getElementById('registerForm').classList.add('hidden');
-}
 
 function loadEventsForLocationForm() {
     fetch('php/get_events.php')
@@ -59,27 +45,28 @@ function loadEventsForLocationForm() {
         .catch(error => console.error('Ошибка:', error));
 }
 
-function loadEvents() {
+function loadLocations() {
     fetch('php/get_locations.php')
         .then(response => response.json())
-        .then(events => {
+        .then(locations => {
             document.getElementById('locationList').innerHTML = locations.map(location => `
-                <li class="event-item">
+                <li class="location-item">
                     <h4>${location.title}</h4>
-                    <img src="${location.image}" alt="${location.title}" class="event-image">
+                    ${location.image ? `<img src="${location.image}" alt="${location.title}" class="event-image">` : ''}
                     <p>${location.description}</p>
+                    ${location.events?.length ? `
                     <div class="participants-container">
-                        <h5>Участники:</h5>
+                        <h5>Связанные события:</h5>
                         <div class="participants-grid">
-                            ${location.participants.map(p => `
+                            ${location.events.map(event => `
                                 <div class="participant">
-                                    <img src="${p.image}" alt="${p.name}" class="participant-avatar">
-                                    <span>${p.name}</span>
+                                    ${event.image ? `<img src="${event.image}" alt="${event.title}" class="participant-avatar">` : ''}
+                                    <span>${event.title}</span>
                                 </div>
                             `).join('')}
                         </div>
-                    </div>
-                    <button onclick="deleteEvent(${location.id})" class="delete-btn">Удалить</button>
+                    </div>` : ''}
+                    <button onclick="deleteLocation(${location.id})" class="delete-btn">Удалить</button>
                 </li>
             `).join('');
         })
