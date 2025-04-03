@@ -12,7 +12,7 @@ document.getElementById('eventForm').addEventListener('submit', function(e) {
     const formData = new FormData(this);
     participants.forEach(id => formData.append('participants[]', id));
 
-    fetch('php/add_event.php', {
+    fetch('php/event/add_event.php', {
         method: 'POST',
         body: formData
     })
@@ -30,7 +30,7 @@ document.getElementById('eventForm').addEventListener('submit', function(e) {
 });
 
 function loadCharactersForEventForm() {
-    fetch('php/get_characters.php')
+    fetch('php/character/get_characters.php')
         .then(response => response.json())
         .then(characters => {
             loadCheckboxes('participantsList', characters, 'participant');
@@ -39,7 +39,7 @@ function loadCharactersForEventForm() {
 }
 
 function loadEvents() {
-    fetch('php/get_events.php')
+    fetch('php/event/get_events.php')
         .then(response => response.json())
         .then(events => {
             document.getElementById('eventList').innerHTML = events.map(event => `
@@ -76,7 +76,7 @@ document.getElementById('showEvents').addEventListener('click', function(e) {
 
 function deleteEvent(eventId) {
     if (confirm('Вы уверены, что хотите удалить это событие?')) {
-        fetch('php/delete_event.php', {
+        fetch('php/event/delete_event.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

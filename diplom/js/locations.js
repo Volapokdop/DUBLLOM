@@ -12,7 +12,7 @@ document.getElementById('locationForm').addEventListener('submit', function (e) 
     const formData = new FormData(this);
     events.forEach(id => formData.append('events[]', id));
 
-    fetch('php/add_location.php', {
+    fetch('php/location/add_location.php', {
         method: 'POST',
         body: formData,
     })
@@ -37,7 +37,7 @@ document.getElementById('showLocations').addEventListener('click', function (e) 
 });
 
 function loadEventsForLocationForm() {
-    fetch('php/get_events.php')
+    fetch('php/event/get_events.php')
         .then(response => response.json())
         .then(events => {
             loadCheckboxes('eventsList', events, 'character');
@@ -46,7 +46,7 @@ function loadEventsForLocationForm() {
 }
 
 function loadLocations() {
-    fetch('php/get_locations.php')
+    fetch('php/location/get_locations.php')
         .then(response => response.json())
         .then(locations => {
             document.getElementById('locationList').innerHTML = locations.map(location => `
@@ -75,7 +75,7 @@ function loadLocations() {
 
 function deleteLocation(locationId) {
     if (confirm('Вы уверены, что хотите удалить эту локацию?')) {
-        fetch('php/delete_location.php', {
+        fetch('php/location/delete_location.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -3,7 +3,7 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
 
     const formData = new FormData(this);
 
-    fetch('php/add_character.php', {
+    fetch('php/character/add_character.php', {
         method: 'POST',
         body: formData,
     })
@@ -19,6 +19,11 @@ document.getElementById('characterForm').addEventListener('submit', function (e)
     .catch(error => console.error('Ошибка:', error));
 });
 
+document.getElementById('characterForm').innerHTML = `
+    <label for="characterBirthday">День рождения:</label>
+    <input type="text" id="characterBirthday" name="birthday" required>
+`;
+
 document.getElementById('showCharacters').addEventListener('click', function (e) {
     e.preventDefault();
     allHide();
@@ -28,7 +33,7 @@ document.getElementById('showCharacters').addEventListener('click', function (e)
 });
 
 function loadCharacters() {
-    fetch('php/get_characters.php')
+    fetch('php/character/get_characters.php')
         .then(response => response.json())
         .then(characters => {
             const characterList = document.getElementById('characterList');
@@ -53,7 +58,7 @@ function loadCharacters() {
 }
 
 function loadCharactersForEventForm() {
-    fetch('php/get_characters.php')
+    fetch('php/character/get_characters.php')
         .then(response => response.json())
         .then(characters => {
             loadCheckboxes('charactersContainer', characters, 'participant');
@@ -67,7 +72,7 @@ async function deleteCharacter(e) {
     if (!confirm('Вы уверены, что хотите удалить этого персонажа?')) return;
 
     try {
-        const response = await fetch('php/delete_character.php', {
+        const response = await fetch('php/character/delete_character.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

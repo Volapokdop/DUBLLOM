@@ -6,7 +6,7 @@ const formData = new FormData(e.target);
 const username = formData.get('username');
 
 try {
-    const response = await fetch('php/register.php', {
+    const response = await fetch('php/auth/register.php', {
         method: 'POST',
         body: formData
     });
@@ -36,7 +36,7 @@ document.getElementById('loginPHP').addEventListener('submit', function (e) {
     const formData = new FormData(this);
     const username = formData.get('username');
 
-    fetch('php/login.php', {
+    fetch('php/auth/login.php', {
         method: 'POST',
         body: formData
     })
@@ -91,6 +91,7 @@ function checkAuthState() {
         document.getElementById('showEvents').classList.remove('hidden');
         document.getElementById('showLocations').classList.remove('hidden');
         document.getElementById('showMyLibrary').classList.remove('hidden');
+        document.getElementById('showEditor').classList.remove('hidden');
     } else {
         document.getElementById('userName').classList.add('hidden');
         document.getElementById('logoutButton').classList.add('hidden');

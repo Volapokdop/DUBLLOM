@@ -36,6 +36,7 @@ function allHide() {
     document.getElementById('locations').classList.add('hidden');
     document.getElementById('loginForm').classList.add('hidden');
     document.getElementById('registerForm').classList.add('hidden');
+    document.getElementById('editor').classList.add('hidden');
 }
 
 function showMainPage() {

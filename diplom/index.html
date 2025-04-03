@@ -11,6 +11,7 @@
         <nav>
             <a href="#" onclick="showMainPage()">Главная</a>
             <a href="#" id="showMyLibrary" onclick="showMyLibrary()" class="hidden">Моя библиотека</a>
+            <a href="#" id="showEditor" class="hidden">Редактор</a>
             <a href="#" id="showCharacters" class="hidden">Персонажи</a>
             <a href="#" id="showEvents" class="hidden">События</a>
             <a href="#" id="showLocations" class="hidden">Локации</a>
@@ -54,6 +55,41 @@
         </div>
     </div>
 
+    <div id="editor" class="hidden">
+        <div class="container">
+            <h2>Текстовый редактор</h2>
+
+            <div class="editor-controls">
+                <select id="bookSelector">
+                    <option value="new">Новая книга</option>
+                </select>
+                <input type="text" id="chapterTitle" placeholder="Название главы">
+                <button id="addChapter">Добавить главу</button>
+                <button id="saveBook">Сохранить книгу</button>
+            </div>
+
+            <div class="editor-wrapper">
+                <div class="chapter-list">
+                    <ul id="chaptersList"></ul>
+                </div>
+                <div class="text-editor">
+                    <div id="toolbar">
+                        <button data-command="bold"><b>B</b></button>
+                        <button data-command="italic"><i>I</i></button>
+                        <button data-command="underline"><u>U</u></button>
+                        <select data-command="heading">
+                            <option value="">Шрифт</option>
+                            <option value="h1">Заголовок 1</option>
+                            <option value="h2">Заголовок 2</option>
+                            <option value="p">Обычный</option>
+                        </select>
+                    </div>
+                    <div id="editorContent" contenteditable="true"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="books" class="hidden">
         <button id="showAddBookForm" class="add-book-btn">Добавить книгу</button>
 
@@ -92,7 +128,7 @@
                     <input type="number" id="characterAge" name="age" required>
 
                     <label for="characterBirthday">День рождения:</label>
-                    <input type="date" id="characterBirthday" name="birthday" required>
+                    <input type="text" id="characterBirthday" name="birthday" required>
 
                     <label for="characterGender">Пол:</label>
                     <select id="characterGender" name="gender" required>
@@ -176,25 +212,12 @@
         </div>
     </div>
 
-    <div id="editForm" class="form-container hidden">
-        <h2>Редактировать книгу</h2>
-        <label for="editTitle">Название книги:</label>
-        <input type="text" id="editTitle" placeholder="Введите название книги">
-        <label for="editAuthor">Автор:</label>
-        <input type="text" id="editAuthor" placeholder="Введите автора">
-        <label for="editCover">Обложка книги:</label>
-        <input type="file" id="editCover" accept="image/*">
-        <label for="editFile">Текстовый файл (описание или текст книги):</label>
-        <input type="file" id="editFile" accept=".txt">
-        <button onclick="saveEdit()">Сохранить</button>
-        <button onclick="cancelEdit()">Отмена</button>
-    </div>
-
     <script src="js/auth.js"></script>
     <script src="js/books.js"></script>
     <script src="js/characters.js"></script>
     <script src="js/events.js"></script>
     <script src="js/locations.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/editor.js"></script>
 </body>
 </html>
