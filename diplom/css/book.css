@@ -1,0 +1,124 @@
+.book-list {
+  margin-top: 20px;
+}
+
+.book-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.book-list li {
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
+}
+
+.book-actions {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.book-cover img {
+    width: 120px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.book-info {
+    flex: 1;
+}
+
+.book-info h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.book-text-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.book-text-content {
+    white-space: pre-wrap;
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.back-button {
+    padding: 10px 15px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background: #555;
+}
+
+.book-title {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #0066cc;
+}
+
+.book-title:hover {
+    color: #004499;
+}
+
+/* Добавьте эти стили в файл styles.css */
+.book-item {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.book-main-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.book-cover-img {
+    width: 80px;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.book-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.added-by {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+}
+
+#bookForm input[type="file"] {
+    margin-top: 5px;
+}

@@ -100,13 +100,3 @@ function checkAuthState() {
         document.getElementById('showAddBookForm').classList.add('hidden');
     }
 }
-
-function allHide(){
-    document.getElementById('characters').classList.add('hidden');
-    document.getElementById('myLibrary').classList.add('hidden');
-    document.getElementById('showAddBookForm').classList.add('hidden');
-    document.getElementById('events').classList.add('hidden');
-    document.getElementById('characters').classList.add('hidden');
-    document.getElementById('locations').classList.add('hidden');
-    document.getElementById('books').classList.add('hidden');
-}

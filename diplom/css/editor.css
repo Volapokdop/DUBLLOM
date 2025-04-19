@@ -1,0 +1,291 @@
+#editor {
+    padding: 20px;
+}
+
+.editor-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.editor-controls select,
+.editor-controls input {
+    flex: 1;
+    min-width: 200px;
+}
+
+.editor-controls button {
+    padding: 10px 15px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.editor-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.chapter-list {
+    width: 250px;
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.chapter-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.chapter-list li {
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.chapter-list li.active {
+    background: #4CAF50;
+    color: white;
+}
+
+.text-editor {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#toolbar {
+    background: #f5f5f5;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;          /* Горизонтальное расположение */
+    flex-wrap: wrap;        /* Перенос на новую строку при нехватке места */
+    gap: 5px;              /* Расстояние между элементами */
+    align-items: center;    /* Выравнивание по центру */
+    overflow-x: auto;  /* Горизонтальная прокрутка при необходимости */
+    white-space: nowrap; /* Запрет переноса */
+    flex-wrap: nowrap;   /* Запрет переноса на новую строку */
+}
+
+#toolbar button {
+    padding: 5px 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;         /* Для выравнивания иконок/текста */
+    align-items: center;   /* Вертикальное выравнивание */
+    justify-content: center; /* Горизонтальное выравнивание */
+    min-width: 30px;       /* Минимальная ширина кнопок */
+    height: 30px;          /* Фиксированная высота */
+}
+
+#toolbar select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    height: 30px;          /* Такая же высота, как у кнопок */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 25px;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+#editorContent {
+    min-height: 500px;
+    padding: 20px;
+    outline: none;
+}
+
+#editorContent:focus {
+    outline: none;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.modal-participants {
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.modal-participants h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Стили редактора */
+.text-editor {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#editorContent {
+    min-height: 400px;
+    padding: 20px;
+    outline: none;
+    line-height: 1.6;
+    font-family: Arial, sans-serif;
+}
+
+#editorContent:focus {
+    outline: none;
+}
+
+#editorContent[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #999;
+}
+
+.editor-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    border-radius: 0 0 8px 8px;
+}
+
+.char-counter {
+    color: #999;
+    font-size: 14px;
+}
+
+.editor-btn {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.editor-btn:hover {
+    background: #45a049;
+}
+
+.chapter-list {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 250px;
+}
+
+.chapter-list input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#chaptersList {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+#chaptersList li {
+    padding: 8px 12px;
+    margin: 3px 0;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #eee;
+}
+
+#chaptersList li:hover {
+    background: #f0f0f0;
+}
+
+#chaptersList li.active {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+.editor-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.editor-controls select {
+    flex: 1;
+    min-width: 200px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+#progressText {
+    font-size: 14px;
+    color: #666;
+    min-width: 100px;
+    text-align: right;
+}
+
+.modal-location-events {
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.modal-location-events h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+.modal-location-event {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    background: white;
+    border-radius: 4px;
+    margin: 5px 0;
+}
