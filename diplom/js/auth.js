@@ -1,102 +1,146 @@
-document.addEventListener('DOMContentLoaded', checkAuthState);
+document.addEventListener('DOMContentLoaded', function() {
+    // Элементы DOM
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const goToEditorBtn = document.getElementById('go-to-editor');
+    const loginModal = document.getElementById('login-modal');
+    const registerModal = document.getElementById('register-modal');
+    const closeButtons = document.querySelectorAll('.close');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const authButtons = document.getElementById('auth-buttons');
+    const userInfo = document.getElementById('user-info');
+    const usernameDisplay = document.getElementById('username-display');
 
-document.getElementById('registerPHP')?.addEventListener('submit', async (e) => {
-e.preventDefault();
-const formData = new FormData(e.target);
-const username = formData.get('username');
+    // Проверка авторизации при загрузке
+    checkAuth();
 
-try {
-    const response = await fetch('php/auth/register.php', {
-        method: 'POST',
-        body: formData
+    // Открытие модальных окон
+    loginBtn.addEventListener('click', () => loginModal.style.display = 'block');
+    registerBtn.addEventListener('click', () => registerModal.style.display = 'block');
+
+    // Закрытие модальных окон
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+            registerModal.style.display = 'none';
+        });
     });
 
-    if (!response.ok) throw new Error('Network error');
+    // Закрытие при клике вне окна
+    window.addEventListener('click', function(event) {
+        if (event.target === loginModal) loginModal.style.display = 'none';
+        if (event.target === registerModal) registerModal.style.display = 'none';
+    });
 
-    const data = await response.json();
+    // Обработка формы входа
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
 
-    if (data.status === "success") {
-        localStorage.setItem('userId', data.userId);
-        localStorage.setItem('username', username);
-        checkAuthState();
-        allHide();
-        location.reload();
-    } else {
-        alert(data.message || 'Ошибка регистрации');
-    }
-} catch (error) {
-    console.error('Registration error:', error);
-    alert('Ошибка соединения');
-}
-});
+        loginUser(username, password);
+    });
 
-document.getElementById('loginPHP').addEventListener('submit', function (e) {
-    e.preventDefault();
+    // Обработка формы регистрации
+    registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('register-username').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirm = document.getElementById('register-confirm').value;
 
-    const formData = new FormData(this);
-    const username = formData.get('username');
-
-    fetch('php/auth/login.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            localStorage.setItem('userId', data.userId);
-            localStorage.setItem('username', username);
-            checkAuthState();
-            location.reload();
-        } else {
-            alert(data.message);
+        if (password !== confirm) {
+            document.getElementById('register-error').textContent = 'Пароли не совпадают';
+            return;
         }
-    })
-    .catch(error => console.error('Ошибка:', error));
-});
 
-document.getElementById('registerLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    allHide();
-    document.getElementById('registerForm').classList.remove('hidden');
-    document.getElementById('loginForm').classList.add('hidden');
-});
+        registerUser(username, email, password);
+    });
 
-document.getElementById('loginLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    allHide();
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('registerForm').classList.add('hidden');
-});
-
-document.getElementById('logoutButton').addEventListener('click', () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('userId');
-    checkAuthState();
-    allHide();
-    location.reload();
-});
-
-function checkAuthState() {
-    const isLoggedIn = localStorage.getItem('username') !== null;
-
-    if (isLoggedIn) {
-        const username = localStorage.getItem('username');
-        document.getElementById('userName').textContent = username;
-        document.getElementById('userName').classList.remove('hidden');
-        document.getElementById('logoutButton').classList.remove('hidden');
-        document.getElementById('loginLink').classList.add('hidden');
-        document.getElementById('registerLink').classList.add('hidden');
-        document.getElementById('showAddBookForm').classList.remove('hidden');
-        document.getElementById('showCharacters').classList.remove('hidden');
-        document.getElementById('showEvents').classList.remove('hidden');
-        document.getElementById('showLocations').classList.remove('hidden');
-        document.getElementById('showMyLibrary').classList.remove('hidden');
-        document.getElementById('showEditor').classList.remove('hidden');
-    } else {
-        document.getElementById('userName').classList.add('hidden');
-        document.getElementById('logoutButton').classList.add('hidden');
-        document.getElementById('loginLink').classList.remove('hidden');
-        document.getElementById('registerLink').classList.remove('hidden');
-        document.getElementById('showAddBookForm').classList.add('hidden');
+    // Выход из системы
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logoutUser);
     }
-}
+
+    // Переход в редактор
+    if (goToEditorBtn) {
+        goToEditorBtn.addEventListener('click', () => {
+            window.location.href = 'editor.html';
+        });
+    }
+
+    // Функция проверки авторизации
+    function checkAuth() {
+        fetch('php/auth.php?action=check')
+            .then(response => response.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    authButtons.style.display = 'none';
+                    userInfo.style.display = 'flex';
+                    usernameDisplay.textContent = data.username;
+                } else {
+                    authButtons.style.display = 'flex';
+                    userInfo.style.display = 'none';
+                }
+            });
+    }
+
+    // Функция входа пользователя
+    function loginUser(username, password) {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+
+        fetch('php/auth.php?action=login', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loginModal.style.display = 'none';
+                checkAuth();
+            } else {
+                document.getElementById('login-error').textContent = data.message;
+            }
+        });
+    }
+
+    // Функция регистрации пользователя
+    function registerUser(username, email, password) {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password', password);
+
+        fetch('php/auth.php?action=register', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                registerModal.style.display = 'none';
+                document.getElementById('register-error').textContent = '';
+                document.getElementById('login-username').value = username;
+                document.getElementById('register-form').reset();
+                loginModal.style.display = 'block';
+            } else {
+                document.getElementById('register-error').textContent = data.message;
+            }
+        });
+    }
+
+    // Функция выхода пользователя
+    function logoutUser() {
+        fetch('php/auth.php?action=logout')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    checkAuth();
+                }
+            });
+    }
+});

@@ -3,386 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пишем и читаем</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/book.css">
-    <link rel="stylesheet" href="css/character.css">
-    <link rel="stylesheet" href="css/editor.css">
-    <link rel="stylesheet" href="css/event.css">
-    <link rel="stylesheet" href="css/library.css">
-    <link rel="stylesheet" href="css/location.css">
-    <link rel="stylesheet" href="css/notification.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Литературный редактор</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
     <header>
-        <nav>
-            <a href="#" onclick="showMainPage()">Главная</a>
-            <a href="#" id="showMyLibrary" onclick="showMyLibrary()" class="hidden">Моя библиотека</a>
-            <a href="#" id="showEditor" class="hidden">Редактор</a>
-            <a href="#" id="showCharacters" class="hidden">Персонажи</a>
-            <a href="#" id="showEvents" class="hidden">События</a>
-            <a href="#" id="showLocations" class="hidden">Локации</a>
-            <a href="#" id="loginLink">Войти</a>
-            <a href="#" id="registerLink">Регистрация</a>
-            <span id="userName" class="hidden"></span>
-            <div id="notificationsContainer" class="hidden">
-                <div id="notificationBell">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
-                    <span id="notificationCount" class="notification-badge hidden">0</span>
-                </div>
-                <div id="notificationsDropdown" class="notifications-dropdown hidden">
-                    <div class="notifications-header">
-                        <h4>Уведомления</h4>
-                        <button id="clearNotifications">Очистить все</button>
-                    </div>
-                    <div id="notificationsList" class="notifications-list"></div>
-                </div>
-            </div>
-            <button id="logoutButton" class="hidden">Выйти</button>
-        </nav>
+        <h1>Литературный редактор</h1>
+        <div id="auth-buttons">
+            <button id="login-btn">Войти</button>
+            <button id="register-btn">Регистрация</button>
+        </div>
+        <div id="user-info">
+            <span id="username-display"></span>
+            <button id="go-to-index" class="nav-btn">Главная</button>
+            <button id="go-to-editor" class="nav-btn">Редактор</button>
+            <button id="go-to-cards" class="nav-btn">Карточки</button>
+            <button id="logout-btn">Выйти</button>
+        </div>
     </header>
 
-    <div class="container">
-        <div id="registerForm" class="form-container hidden">
-            <h2>Регистрация</h2>
-            <form id="registerPHP" method="POST" action="php/register.php">
-                <label for="registerUsername">Имя пользователя:</label>
-                <input type="text" id="registerUsername" name="username" required>
-                <label for="registerPassword">Пароль:</label>
-                <input type="password" id="registerPassword" name="password" required>
-                <button type="submit">Зарегистрироваться</button>
-            </form>
-            <p id="registerMessage"></p>
-        </div>
+    <main>
+        <section id="welcome-section">
+            <h2>Добро пожаловать в литературный редактор</h2>
+            <p>Создавайте, редактируйте и храните свои литературные произведения и сценарии в одном месте.</p>
+        </section>
 
-        <div id="loginForm" class="form-container hidden">
-            <h2>Вход</h2>
-            <form id="loginPHP" enctype="multipart/form-data">
-                <label for="loginUsername">Имя пользователя:</label>
-                <input type="text" id="loginUsername" name="username" required>
-                <label for="loginPassword">Пароль:</label>
-                <input type="password" id="loginPassword" name="password" required>
-                <button type="submit">Войти</button>
-            </form>
-            <p id="loginMessage"></p>
-        </div>
-    </div>
-
-    <div id="myLibrary" class="hidden">
-        <div class="container">
-            <h2>Моя библиотека</h2>
-            <ul id="myLibraryList"></ul>
-        </div>
-    </div>
-
-    <template id="libraryBookTemplate">
-        <li class="library-book">
-            <div class="book-cover">
-                <img src="" alt="" class="hidden">
-            </div>
-            <div class="book-info">
-                <h3 class="book-title"></h3>
-                <p class="book-author">Автор: <span></span></p>
-                <a href="#" class="download-btn hidden">Скачать</a>
-                <button class="remove-btn">Удалить из библиотеки</button>
-            </div>
-        </li>
-    </template>
-
-    <div id="editor" class="hidden">
-        <div class="container">
-            <h2>Редактор текста</h2>
-
-            <div class="editor-controls">
-                <select id="bookSelector">
-                    <option value="new">Новая книга</option>
-                </select>
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="writingProgress"></div>
-                    </div>
-                    <span id="progressText">0/3600 (0%)</span>
-                </div>
-                <button id="saveBook" class="editor-btn">Сохранить</button>
-                <button id="deleteBook" class="editor-btn delete-btn">Удалить книгу</button>
-            </div>
-
-            <div class="editor-wrapper">
-                <div class="chapter-list">
-                    <button id="addChapter" class="editor-btn">+ Добавить главу</button>
-                    <input type="text" id="chapterTitle" placeholder="Название главы">
-                    <ul id="chaptersList"></ul>
-                </div>
-
-                <div class="text-editor">
-                    <div id="toolbar">
-                        <button data-command="bold" title="Жирный"><b>B</b></button>
-                        <button data-command="italic" title="Курсив"><i>I</i></button>
-                        <button data-command="underline" title="Подчеркивание"><u>U</u></button>
-                        <button data-command="insertUnorderedList" title="Маркированный список">•</button>
-                        <button data-command="insertOrderedList" title="Нумерованный список">1.</button>
-                        <button data-command="createLink" title="Ссылка">🔗</button>
-                        <button data-command="insertImage" title="Изображение">🖼️</button>
-                        <button data-command="formatBlock" value="h2" title="Заголовок">H2</button>
-                        <button data-command="formatBlock" value="blockquote" title="Цитата">❝</button>
-                        <button data-command="undo" title="Отменить">↩️</button>
-                        <button data-command="redo" title="Повторить">↪️</button>
-                    </div>
-
-                    <div id="editorContent" contenteditable="true" placeholder="Начните писать здесь..."></div>
-
-                    <div class="editor-footer">
-                        <button id="previewBtn" class="editor-btn">Предпросмотр</button>
-                        <div class="char-counter">0/5000</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="books" class="hidden">
-        <button id="showAddBookForm" class="add-book-btn">Добавить книгу</button>
-
-        <div id="addBookFormContainer" class="hidden">
-            <h3>Добавить новую книгу</h3>
-            <form id="bookForm" enctype="multipart/form-data">
-                <label for="bookTitle">Название книги:</label>
-                <input type="text" id="bookTitle" name="title" required>
-
-                <label for="bookAuthor">Автор:</label>
-                <input type="text" id="bookAuthor" name="author" required>
-
-                <label for="bookGenre">Жанр:</label>
-                <input type="text" id="bookGenre" name="genre" required>
-
-                <label for="bookLanguage">Язык:</label>
-                <input type="text" id="bookLanguage" name="language" required>
-
-                <label for="bookAnnotation">Аннотация:</label>
-                <textarea id="bookAnnotation" name="annotation" required></textarea>
-
-                <label for="bookAgeRestriction">Возрастное ограничение:</label>
-                <select id="bookAgeRestriction" name="age_restriction">
-                    <option value="0">0+</option>
-                    <option value="6">6+</option>
-                    <option value="12">12+</option>
-                    <option value="16">16+</option>
-                    <option value="18">18+</option>
-                </select>
-
-                <label for="bookCopyright">Авторские права:</label>
-                <select id="bookCopyright" name="copyright">
-                    <option value="all_rights">Все права защищены</option>
-                    <option value="creative_commons">Creative Commons</option>
-                    <option value="public_domain">Общественное достояние</option>
-                </select>
-
-                <label for="bookCover">Обложка книги:</label>
-                <input type="file" id="bookCover" name="cover" accept="image/*" required>
-
-                <label for="bookFile">Текстовый файл:</label>
-                <input type="file" id="bookFile" name="file" accept=".txt,.pdf,.epub" required>
-
-                <button type="submit">Добавить</button>
-                <button type="button" id="cancelAddBook">Отмена</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="bookSection" class="hidden">
-      <h2>Список книг</h2>
-      <ul id="bookList"></ul>
-    </div>
-
-    <template id="bookItemTemplate">
-        <li class="book-item">
-            <div class="book-main-info">
-                <span class="book-title"></span>
-                <img src="" alt="Обложка" class="book-cover-img hidden">
-            </div>
-            <div class="book-meta">
-                <span class="book-genre"></span>
-                <span class="book-annotation"></span>
-                <span class="added-by"></span>
-                <a href="#" download class="download-link hidden">Скачать</a>
-                <button class="library-btn">В библиотеку</button>
-                <button class="edit-btn hidden">Редактировать</button>
-                <button class="delete-btn hidden">Удалить книгу</button>
-            </div>
-        </li>
-    </template>
-
-    <div id="characters" class="hidden">
-        <div class="container">
-            <h2>Персонажи</h2>
-
-            <div id="characterFormContainer" class="hidden">
-                <form id="characterForm" enctype="multipart/form-data">
-                    <label for="characterName">Имя:</label>
-                    <input type="text" id="characterName" name="name" required>
-
-                    <label for="characterAge">Возраст:</label>
-                    <input type="number" id="characterAge" name="age" required>
-
-                    <label for="characterBirthday">День рождения:</label>
-                    <input type="text" id="characterBirthday" name="birthday" required>
-
-                    <label for="characterGender">Пол:</label>
-                    <select id="characterGender" name="gender" required>
-                        <option value="male">Мужской</option>
-                        <option value="female">Женский</option>
-                    </select>
-
-                    <label for="characterImage">Изображение:</label>
-                    <input type="file" id="characterImage" name="image" accept="image/*" required>
-
-                    <label for="characterDescription">Описание:</label>
-                    <textarea id="characterDescription" name="description" required></textarea>
-
-                    <label for="characterBiography">Биография:</label>
-                    <textarea id="characterBiography" name="biography" required></textarea>
-
-                    <button type="submit">Добавить персонажа</button>
-                </form>
-            </div>
-
-            <h3>Список персонажей</h3>
-            <ul id="characterList"></ul>
-        </div>
-    </div>
-
-    <template id="characterItemTemplate">
-        <li class="character-item" data-character-id="">
-            <div class="character-header">
-                <h4></h4>
-                <div class="character-actions">
-                    <button class="edit-btn" data-id="">Редактировать</button>
-                    <button class="delete-cel" data-id="">Удалить</button>
-                </div>
-            </div>
-            <div class="character-details">
-                <p>Возраст: <span class="character-age"></span></p>
-                <p>День рождения: <span class="character-birthday"></span></p>
-                <p>Пол: <span class="character-gender"></span></p>
-                <img src="" alt="" class="character-image hidden">
-                <p><strong>Описание:</strong> <span class="character-description"></span></p>
-                <p><strong>Биография:</strong> <span class="character-biography"></span></p>
-            </div>
-        </li>
-    </template>
-
-    <template id="generateCharacterModalTemplate">
-        <div class="modal-overlay">
+        <!-- Форма входа -->
+        <div id="login-modal" class="modal">
             <div class="modal-content">
-                <h3>Генератор персонажей (Gemma 3B)</h3>
-                <p>Опишите персонажа, которого хотите создать:</p>
-                <textarea id="aiPrompt" placeholder="Пример: Придумай орка-воина с суровым характером"></textarea>
-                <div class="modal-buttons">
-                    <button id="generateBtn">Сгенерировать</button>
-                    <button id="cancelGenerateBtn">Отмена</button>
-                </div>
-                <div id="generationResult"></div>
-                <div id="ollamaStatus">
-                    Используется локальная модель Gemma 3B через Ollama
-                </div>
-            </div>
-        </div>
-    </template>
-
-    <template id="generatedCharacterResultTemplate">
-        <div class="generated-character-result">
-            <h4>Результат генерации:</h4>
-            <p><strong>Имя:</strong> <span class="generated-name"></span></p>
-            <p><strong>Возраст:</strong> <span class="generated-age"></span></p>
-            <p><strong>Дата рождения:</strong> <span class="generated-birthday"></span></p>
-            <p><strong>Пол:</strong> <span class="generated-gender"></span></p>
-            <p><strong>Описание:</strong> <span class="generated-description"></span></p>
-            <p><strong>Биография:</strong> <span class="generated-biography"></span></p>
-            <div class="generated-character-actions">
-                <button id="useCharacterBtn">Использовать этого персонажа</button>
-                <button id="saveCharacterBtn">Сохранить персонажа</button>
-            </div>
-        </div>
-    </template>
-
-    <!-- Шаблон для сообщения о загрузке -->
-    <template id="generationLoadingTemplate">
-        <p class="generation-loading">Генерация персонажа (может занять 10-20 секунд)...</p>
-    </template>
-
-    <!-- Шаблон для сообщения об ошибке -->
-    <template id="generationErrorTemplate">
-        <p class="error-message"></p>
-    </template>
-
-    <div id="events" class="hidden">
-        <div class="container">
-            <h2>События</h2>
-
-            <div id="eventFormContainer" class="hidden">
-                <form id="eventForm" enctype="multipart/form-data">
-                    <label for="eventTitle">Название:</label>
-                    <input type="text" id="eventTitle" name="title" required>
-
-                    <label for="eventImage">Изображение:</label>
-                    <input type="file" id="eventImage" name="image" accept="image/*" required>
-
-                    <label for="eventDescription">Описание:</label>
-                    <textarea id="eventDescription" name="description" required></textarea>
-
-                    <label>Выберите участников:</label>
-                    <div id="participantsList" class="checkbox-container">
-
-                    </div>
-
-                    <button type="submit">Добавить событие</button>
+                <span class="close">&times;</span>
+                <h2>Вход</h2>
+                <form id="login-form">
+                    <input type="text" id="login-username" placeholder="Имя пользователя" required>
+                    <input type="password" id="login-password" placeholder="Пароль" required>
+                    <button type="submit">Войти</button>
                 </form>
+                <div id="login-error" class="error-message"></div>
             </div>
-
-            <h3>Список событий</h3>
-            <ul id="eventList"></ul>
         </div>
-    </div>
 
-    <div id="locations" class="hidden">
-        <div class="container">
-            <h2>Локации</h2>
-
-            <div id="locationFormContainer" class="hidden">
-                <form id="locationForm" enctype="multipart/form-data">
-                    <label for="locationTitle">Название:</label>
-                    <input type="text" id="locationTitle" name="title" required>
-
-                    <label for="locationImage">Изображение:</label>
-                    <input type="file" id="locationImage" name="image" accept="image/*" required>
-
-                    <label for="locationDescription">Описание:</label>
-                    <textarea id="locationDescription" name="description" required></textarea>
-
-                    <label>События, произошедшие в локации:</label>
-                    <div id="eventsList"  class="checkbox-container">
-
-                    </div>
-
-                    <button type="submit">Добавить локацию</button>
+        <!-- Форма регистрации -->
+        <div id="register-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Регистрация</h2>
+                <form id="register-form">
+                    <input type="text" id="register-username" placeholder="Имя пользователя" required>
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="Пароль" required>
+                    <input type="password" id="register-confirm" placeholder="Подтвердите пароль" required>
+                    <button type="submit">Зарегистрироваться</button>
                 </form>
+                <div id="register-error" class="error-message"></div>
             </div>
-
-            <h3>Список локаций</h3>
-            <ul id="locationList"></ul>
         </div>
-    </div>
+    </main>
+
+    <footer>
+        <p>Литературный редактор &copy; 2025</p>
+    </footer>
 
     <script src="js/auth.js"></script>
-    <script src="js/books.js"></script>
-    <script src="js/characters.js"></script>
-    <script src="js/events.js"></script>
-    <script src="js/locations.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/editor.js"></script>
 </body>
 </html>
