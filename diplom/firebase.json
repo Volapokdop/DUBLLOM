@@ -1,0 +1,13 @@
+{
+  "hosting": {
+    "site": "duplom-c5718",
+    "public": "litscript/build", 
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
